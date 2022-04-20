@@ -1,0 +1,15 @@
+{
+  "name": "returnator-adventures",
+  "version": "0.0.1",
+  "description": "Monthly crypto-currency returns based on historical data provided by Binance API.",
+  "scripts": {
+    "dev": "npx http-server"
+  },
+  "keywords": [],
+  "author": "amtins",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amtins/returnator-adventures/issues"
+  },
+  "homepage": "https://github.com/amtins/returnator-adventures#readme"
+}
