@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Monthly crypto-currency returns based on historical data provided by Binance API.",
   "scripts": {
-    "dev": "npx http-server"
+    "dev": "npx http-server -p 6969 -c-1 --cors"
   },
   "keywords": [],
   "author": "amtins",
