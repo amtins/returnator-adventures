@@ -2,298 +2,298 @@
 @import "https://unpkg.com/open-props@1.3.16/open-props.min.css";
 
 :root {
-    --layout: min(100% - 2rem, 1280px);
+  --layout: min(100% - 2rem, 1280px);
 }
 
 body {
-    box-sizing: border-box;
+  box-sizing: border-box;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    margin: var(--size-0);
-    padding-bottom: var(--size-7);
+  margin: var(--size-0);
+  padding-bottom: var(--size-7);
 
-    background: var(--gradient-23);
-    background: var(--gray-9);
+  background: var(--gradient-23);
+  background: var(--gray-9);
 
-    height: 100%;
+  height: 100%;
 
-    overflow-y: scroll;
+  overflow-y: scroll;
 
-    letter-spacing: var(--font-letterspacing-1);
-    color: var(--gray-0);
-    font-family: var(--font-mono);
-    font-weight: var(--font-weight-9);
+  letter-spacing: var(--font-letterspacing-1);
+  color: var(--gray-0);
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-9);
 }
 
 ul {
-    display: flex;
-    flex-direction: row;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    gap: var(--size-4);
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: var(--size-4);
+  align-items: center;
 }
 
 li {
-    fill: var(--gray-0);
+  fill: var(--gray-0);
 }
 
 .wip {
-    position: fixed;
+  position: fixed;
 
-    right: -85px;
-    bottom: 67px;
+  right: -85px;
+  bottom: 67px;
 
-    transform: rotate(-53deg);
+  transform: rotate(-53deg);
 
-    background: var(--red-9);
-    box-shadow: var(--shadow-3);
+  background: var(--red-9);
+  box-shadow: var(--shadow-3);
 
-    padding: var(--size-4) var(--size-8);
+  padding: var(--size-4) var(--size-8);
 
-    font-size: var(--font-size-2);
+  font-size: var(--font-size-2);
 }
 
 .loader {
-    display: flex;
+  display: flex;
 
-    position: fixed;
+  position: fixed;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    z-index: 1;
+  z-index: 1;
 
-    background: rgba(0, 0, 0, .5);
+  background: rgba(0, 0, 0, .5);
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .loading {
-    border: 2px solid #f3f3f3;
+  border: 2px solid #f3f3f3;
 
-    animation: spin .7s linear infinite;
+  animation: spin .7s linear infinite;
 
-    border-top: 2px solid #555;
-    border-radius: 50%;
+  border-top: 2px solid #555;
+  border-radius: 50%;
 
-    width: 50px;
-    height: 50px;
+  width: 50px;
+  height: 50px;
 }
 
 .header,
 .content {
-    width: var(--layout);
+  width: var(--layout);
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .header__title {
-    background: var(--gradient-13);
-    background-clip: text;
-    -webkit-background-clip: text;
+  background: var(--gradient-13);
+  background-clip: text;
+  -webkit-background-clip: text;
 
-    margin-block: var(--size-2);
+  margin-block: var(--size-2);
 
-    color: transparent;
-    font-size: var(--font-size-8);
-    font-weight: var(--font-weight-9);
+  color: transparent;
+  font-size: var(--font-size-8);
+  font-weight: var(--font-weight-9);
 
-    transition: font-size .5s;
+  transition: font-size .5s;
 
 }
 
 .menu {
-    display: none;
+  display: none;
 }
 
 .header__logo {
-    display: inline-block;
+  display: inline-block;
 
-    color: initial;
+  color: initial;
 
-    transition: transform .2s;
+  transition: transform .2s;
 }
 
 .header__logo:hover {
-    transform: rotate(180deg) scale(1.3);
+  transform: rotate(180deg) scale(1.3);
 }
 
 .content {
-    display: flex;
+  display: flex;
 
-    flex-direction: column;
-    align-content: center;
+  flex-direction: column;
+  align-content: center;
 
-    height: fit-content;
+  height: fit-content;
 
-    gap: var(--size-7);
+  gap: var(--size-7);
 }
 
 .search-bar {
-    position: sticky;
-    position: -webkit-sticky;
-    display: flex;
+  position: sticky;
+  position: -webkit-sticky;
+  display: flex;
 
-    top: 0;
-    gap: var(--size-2);
+  top: 0;
+  gap: var(--size-2);
 
-    flex-direction: column;
-    padding: var(--size-4);
+  flex-direction: column;
+  padding: var(--size-4);
 
-    background: var(--gray-8);
-    border-radius: var(--radius-2);
+  background: var(--gray-8);
+  border-radius: var(--radius-2);
 
-    box-sizing: border-box;
-    box-shadow: var(--shadow-3);
+  box-sizing: border-box;
+  box-shadow: var(--shadow-3);
 }
 
 .search-bar__label {
-    font-size: var(--font-size-4);
+  font-size: var(--font-size-4);
 
-    transition: font-size .5s;
+  transition: font-size .5s;
 }
 
 .search-bar__input {
-    border: solid 1px var(--gray-6);
-    border-radius: var(--radius-2);
-    background: var(--gray-9);
+  border: solid 1px var(--gray-6);
+  border-radius: var(--radius-2);
+  background: var(--gray-9);
 
-    padding: var(--size-2);
+  padding: var(--size-2);
 
-    color: var(--gray-0);
-    font-size: var(--font-size-3);
+  color: var(--gray-0);
+  font-size: var(--font-size-3);
 }
 
 .chart-container {
-    display: flex;
+  display: flex;
 
-    flex-direction: column;
-    justify-content: center;
+  flex-direction: column;
+  justify-content: center;
 
-    border-radius: var(--radius-2);
-    box-shadow: var(--shadow-3);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-3);
 
-    background: var(--gray-8);
+  background: var(--gray-8);
 
-    padding: var(--size-2);
+  padding: var(--size-2);
 
-    overflow-x: auto;
+  overflow-x: auto;
 
-    color: var(--gray-0);
+  color: var(--gray-0);
 }
 
 .chart {
-    border-spacing: var(--size-2);
-    empty-cells: hide;
+  border-spacing: var(--size-2);
+  empty-cells: hide;
 }
 
 .chart__caption {
-    padding: var(--size-4) var(--size-2);
+  padding: var(--size-4) var(--size-2);
 
-    text-align: left;
-    font-size: var(--font-size-4);
+  text-align: left;
+  font-size: var(--font-size-4);
 }
 
 .crypto-currency {
-    text-transform: uppercase;
-    font-weight: var(--font-weight-8);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-8);
 }
 
 .chart th,
 .chart td {
-    padding: var(--size-2);
+  padding: var(--size-2);
 }
 
 .chart td {
-    border-radius: var(--radius-2);
+  border-radius: var(--radius-2);
 
-    text-align: center;
+  text-align: center;
 }
 
 .chart__percentage--up {
-    background-color: #00bb00;
-    background-color: var(--green-7);
+  background-color: #00bb00;
+  background-color: var(--green-7);
 }
 
 .chart__percentage--down {
-    background-color: #b00;
-    background-color: var(--red-7);
+  background-color: #b00;
+  background-color: var(--red-7);
 }
 
 .footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: var(--size-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: var(--size-6);
 }
 
 .footer__btn {
-    border: none;
-    border-radius: var(--radius-2);
-    background-color: var(--blue-6);
+  border: none;
+  border-radius: var(--radius-2);
+  background-color: var(--blue-6);
 
-    padding: var(--size-3);
+  padding: var(--size-3);
 
-    width: var(--size-13);
+  width: var(--size-13);
 
-    text-shadow: 0 1px 0 var(--blue-2);
-    color: var(--gray-0);
-    font-size: var(--size-4);
-    cursor: pointer;
+  text-shadow: 0 1px 0 var(--blue-2);
+  color: var(--gray-0);
+  font-size: var(--size-4);
+  cursor: pointer;
 }
 
 .footer__btn:disabled {
-    background-color: var(--gray-6);
+  background-color: var(--gray-6);
 
-    color: var(--gray-0);
-    cursor: not-allowed;
+  color: var(--gray-0);
+  cursor: not-allowed;
 }
 
 .footer__link {
-    color: var(--blue-4);
+  color: var(--blue-4);
 }
 
 .footer__link:visited {
-    color: var(--pink-4);
+  color: var(--pink-4);
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 @media screen and (max-width:768px) {
-    .wip {
-        right: -36px;
-        bottom: -23px;
+  .wip {
+    right: -36px;
+    bottom: -23px;
 
-        transform: rotate(-45deg);
+    transform: rotate(-45deg);
 
-        padding: var(--size-2) var(--size-7) var(--size-7);
-    }
+    padding: var(--size-2) var(--size-7) var(--size-7);
+  }
 
-    .wip__label {
-        display: none;
-    }
+  .wip__label {
+    display: none;
+  }
 
-    .header {
-        flex-direction: column;
-    }
+  .header {
+    flex-direction: column;
+  }
 
-    .header__title {
-        font-size: var(--font-size-6);
-    }
+  .header__title {
+    font-size: var(--font-size-6);
+  }
 
-    .search-bar__label {
-        font-size: var(--font-size-3);
-    }
+  .search-bar__label {
+    font-size: var(--font-size-3);
+  }
 }
