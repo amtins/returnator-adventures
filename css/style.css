@@ -92,8 +92,14 @@ li {
 }
 
 .header {
+  background: var(--gray-9);
+
   display: flex;
-  justify-content: space-between;
+  position: sticky;
+
+  top: 0;
+
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -207,6 +213,24 @@ li {
 .crypto-currency {
   text-transform: uppercase;
   font-weight: var(--font-weight-8);
+  padding: var(--size-2);
+
+  text-align: left;
+  font-size: var(--font-size-3);
+}
+
+.coin-info {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.coin-info__image {
+  width: 3em;
+}
+
+.coin-info__symbol {
+  text-transform: uppercase;
 }
 
 .chart th,
@@ -291,6 +315,10 @@ li {
 
   .header__title {
     font-size: var(--font-size-6);
+  }
+
+  .search-bar__label {
+    font-size: var(--font-size-3);
   }
 
   .search-bar__label {

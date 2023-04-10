@@ -15,8 +15,16 @@
       <div class="chart-container">
         <table class="chart">
           <caption class="chart__caption">
-            <span class="crypto-currency"></span>
-            monthly returns(%)<br />
+            <div class="coin-info">
+              <img class="coin-info__image">
+              <div class="coin-info_description">
+                <span class="coin-info__symbol"></span>
+                current price <span class="coin-info__current-price"></span>,
+                ATH price <span class="coin-info__ath"></span>,
+                <span class="coin-info__percent-ath"></span> since ATH
+              </div>
+            </div>
+            <!-- <span class="crypto-currency"></span> -->
           </caption>
           <thead>
             <tr class="chart__row-header">
@@ -68,7 +76,7 @@
       </nav>
     </header>
     <main class="content">
-      <div class="search-bar">
+      <div class="search-bar hide">
         <label for="search" class="search-bar__label"
           >Search for a crypto</label
         >
@@ -84,6 +92,6 @@
       <button class="footer__btn">Load more <span></span></button>
     </footer>
 
-    <script src="src/app.js"></script>
+    <script type="module" src="src/app.js"></script>
   </body>
 </html>

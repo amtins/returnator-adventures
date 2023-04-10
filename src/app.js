@@ -1,15 +1,9 @@
+import filterPairs from "./filter-pairs.js";
+
 const binanceURL = 'https://api.binance.com/api/v3/';
-const cryptoList = [
-  'BTCUSDT',
-  'ETHUSDT',
-  'BNBUSDT',
-  'XRPUSDT',
-  'SOLUSDT',
-  'ADAUSDT',
-  'LUNAUSDT',
-  'AVAXUSDT',
-  'DOGEUSDT',
-];
+const coingeckoURL = 'https://api.coingecko.com/api/v3/';
+
+
 
 const monthList = [
   'January',
@@ -26,41 +20,35 @@ const monthList = [
   'December',
 ];
 
+const nextPage = ((page = 1) => {
+  return () => page++
+})();
+
 /**
  *
- * @param {*} data
+ * @param {*} e
  * @returns
  */
-const loadMoreListener = (data) => {
-  return (e) => {
-    e.preventDefault();
-    e.target.disabled = true;
+const loadMoreListener = async (e) => {
+  e.preventDefault();
+  e.target.disabled = true;
 
-    document.querySelector('.loader').classList.remove('hide');
+  document.querySelector('.loader').classList.remove('hide');
+
+  e.target.textContent = 'Loading ...';
+
+  buildTemplate(await listCoinsByMarketCap()).then((data) => {
+    e.target.disabled = false;
+    e.target.textContent = 'Load more';
 
     if (!data.length) {
-      //TODO Improve user experience
+      e.target.classList.add('hide');
       e.target.disabled = true;
-      e.target.textContent = 'Data loaded';
-      document.querySelector('.loader').classList.add('hide');
-
-      return;
     }
 
-    e.target.textContent = 'Loading ...';
+    document.querySelector('.loader').classList.add('hide');
+  });
 
-    buildTemplate(data.shift()).then(() => {
-      e.target.disabled = false;
-      e.target.textContent = 'Load more';
-
-      if (!data.length) {
-        e.target.classList.add('hide');
-        e.target.disabled = true;
-      }
-
-      document.querySelector('.loader').classList.add('hide');
-    });
-  };
 };
 
 /**
@@ -69,8 +57,8 @@ const loadMoreListener = (data) => {
  */
 const searchListener = ({ target: { value: searchValue = '' } }) => {
   //TODO improve search performance
-  document.querySelectorAll('.crypto-currency').forEach((cryptoCurrency) => {
-    const hasCrypto = cryptoCurrency.textContent
+  document.querySelectorAll('.coin-info__image').forEach((cryptoCurrency) => {
+    const hasCrypto = cryptoCurrency.title
       .toLocaleLowerCase()
       .startsWith(searchValue.toLocaleLowerCase());
 
@@ -157,31 +145,67 @@ const createContentElement = (data) => {
   return fragment;
 };
 
+const currencyFormatter = (amount, maximumFractionDigits = 2) => {
+  const numberFormat = new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: 'USD',
+    trailingZeroDisplay: 'stripIfInteger',
+    maximumFractionDigits
+  });
+
+  return numberFormat.format(amount);
+}
+
+const percentFormatter = (amount, maximumFractionDigits = 2) => {
+  const percentFormat = new Intl.NumberFormat(undefined, {
+    style: 'percent',
+    trailingZeroDisplay: 'stripIfInteger',
+    maximumFractionDigits
+  });
+
+  return percentFormat.format(amount / 100);
+}
+
 /**
  *
  * @param {Array} symbols
  * @returns
  */
-const buildTemplate = (symbols) => {
-  return fetchSymbols(symbols).then((results) => {
-    results.forEach(({ symbol, data }) => {
+const buildTemplate = async (symbolsList) => {
+  const fulfilledRequests = symbolsList
+    .filter(coinRequest => coinRequest.status !== 'rejected');
+
+  fulfilledRequests
+    .forEach(({ value: { symbol, data } }) => {
       const chartTemplate = document
         .getElementById('chart-template')
         .content.cloneNode(true);
       const chartTable = chartTemplate.querySelector('.chart');
       const chartHeaderEl = chartTemplate.querySelector('.chart__row-header');
-      const cryptoCurrencyEl = chartTemplate.querySelector('.crypto-currency');
+      const cointSymbolEl = chartTemplate.querySelector('.coin-info__symbol');
+      const cointImageEl = chartTemplate.querySelector('.coin-info__image');
+      const coinPriceEl = chartTemplate.querySelector('.coin-info__current-price');
+      const coinAthEl = chartTemplate.querySelector('.coin-info__ath');
+      const coinPercentAthEl = chartTemplate.querySelector('.coin-info__percent-ath');
       const chartBodyEl = chartTemplate.querySelector('.chart__content');
-      const cryptoCurrencyName = extractCryptoNameFromSymbol(symbol);
 
-      chartTable.classList.add(cryptoCurrencyName);
-      cryptoCurrencyEl.textContent = cryptoCurrencyName;
+      chartTable.classList.add(symbol.symbol);
+      cointSymbolEl.textContent = symbol.symbol;
+      cointImageEl.src = symbol.image;
+      cointImageEl.alt = symbol.symbol;
+      cointImageEl.title = symbol.symbol;
+
+      coinPriceEl.textContent = currencyFormatter(symbol.current_price);
+      coinAthEl.textContent = currencyFormatter(symbol.ath);
+      coinPercentAthEl.textContent = percentFormatter(symbol.ath_change_percentage)
       chartHeaderEl.append(createMonthHeaders());
       chartBodyEl.append(createContentElement(formatData(data)));
 
       document.querySelector('main').append(chartTemplate);
     });
-  });
+
+  return fulfilledRequests;
+
 };
 
 /**
@@ -285,7 +309,7 @@ const formatData = (data) => {
 
         return {
           Percent: percent,
-          FormattedPercent: `${percent.toFixed(2)}%`,
+          FormattedPercent: percentFormatter(percent),
           FullYear: OpenDate.getFullYear(),
           OpenTime,
           OpenDate,
@@ -323,44 +347,63 @@ const listSymbols = async () => {
   );
 };
 
+const listCoinsByMarketCap = async (page = nextPage(), limit = 10) => {
+  const coinsByMarketCap = await fetch(`${coingeckoURL}coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${limit}&page=${page}&sparkline=false&locale=en`)
+    .then(r => r.json())
+    .then(j => j.map(({
+      ath,
+      ath_change_percentage,
+      current_price,
+      image,
+      symbol }) => ({
+        ath,
+        ath_change_percentage,
+        current_price,
+        image,
+        symbol,
+        binanceSymbol: `${symbol}USDT`.toLocaleUpperCase()
+      }))).catch(e => console.log('ERR', e));
+
+
+  return fetchSymbols(coinsByMarketCap);
+}
+
 /**
  *
  * @param {Array} symbols
  * @returns {Promise}
  */
 const fetchSymbols = async (symbols = []) => {
-  return await Promise.all(
-    symbols.map(async (symbol) => {
-      const response = await fetch(
-        `${binanceURL}klines?symbol=${symbol}&interval=1M&startTime=0`
-      );
-      const json = await response.json();
+  return await Promise.allSettled(
+    symbols
+      .filter(({ binanceSymbol }) => !filterPairs.includes(binanceSymbol))
+      .map(async (symbol) => {
+        const response = await fetch(
+          `${binanceURL}klines?symbol=${symbol.binanceSymbol}&interval=1M&startTime=0`
+        );
+        const data = await response.json();
 
-      return {
-        symbol,
-        data: json,
-      };
-    })
+        return {
+          symbol,
+          data,
+        };
+      })
   );
 };
 
-buildTemplate(cryptoList).then(() => {
-  document.querySelector('.loader').classList.add('hide');
+(async () => {
+  const coinsByMarketCap = await listCoinsByMarketCap();
+
+  buildTemplate(coinsByMarketCap).then(() => {
+    document.querySelector('.loader').classList.add('hide');
+  });
+
   document
     .querySelector('.search-bar__input')
     .addEventListener('input', searchListener);
+  document
+    .querySelector('.footer__btn')
+    .addEventListener('click', loadMoreListener);
 
-  listSymbols()
-    .then((result) => {
-      const data = result
-        .filter((entry) => !cryptoList.includes(entry.symbol))
-        .map(({ symbol }) => symbol);
+})()
 
-      return chunk(data);
-    })
-    .then((data) => {
-      document
-        .querySelector('.footer__btn')
-        .addEventListener('click', loadMoreListener(data));
-    });
-});
